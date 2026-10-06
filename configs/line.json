@@ -1,0 +1,46 @@
+{
+  "name": "demo-line",
+  "seed": 42,
+  "max_time_ms": 60000,
+  "feed": {
+    "interval_min_ms": 2000,
+    "interval_max_ms": 2600
+  },
+  "stations": [
+    {
+      "id": "S1-cutting",
+      "buffer_capacity": 3,
+      "duration_min_ms": 1800,
+      "duration_max_ms": 2400,
+      "fail_per_hour": 120.0,
+      "repair_min_ms": 3000,
+      "repair_max_ms": 9000
+    },
+    {
+      "id": "S2-milling",
+      "buffer_capacity": 2,
+      "duration_min_ms": 2200,
+      "duration_max_ms": 3000,
+      "fail_per_hour": 90.0,
+      "repair_min_ms": 4000,
+      "repair_max_ms": 12000,
+      "check_quality": true,
+      "quality_fail_rate": 0.15,
+      "rework_to": "S1-cutting",
+      "rework_max": 2
+    },
+    {
+      "id": "S3-assembly",
+      "buffer_capacity": 2,
+      "duration_min_ms": 2000,
+      "duration_max_ms": 2600
+    },
+    {
+      "id": "SINK",
+      "buffer_capacity": 1000000,
+      "duration_min_ms": 0,
+      "duration_max_ms": 0,
+      "is_sink": true
+    }
+  ]
+}
