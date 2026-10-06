@@ -1,0 +1,53 @@
+{
+  "name": "demo-line",
+  "seed": 42,
+  "horizon": 200,
+  "source": {
+    "output": "B0_RAW",
+    "count": 60,
+    "firstAt": 0,
+    "interval": { "kind": "uniform", "min": 2.5, "max": 3.5 }
+  },
+  "buffers": [
+    { "id": "B0_RAW", "capacity": 4 },
+    { "id": "B1_CNC", "capacity": 3 },
+    { "id": "B2_REWORK", "capacity": 2 },
+    { "id": "B3_DONE", "capacity": -1, "sink": true }
+  ],
+  "stations": [
+    {
+      "id": "CNC",
+      "input": "B0_RAW",
+      "output": "B1_CNC",
+      "servers": 2,
+      "process": { "kind": "uniform", "min": 4.5, "max": 6.5 },
+      "failure": {
+        "kind": "scheduled",
+        "offset": 30,
+        "interval": 80,
+        "jitter": 5,
+        "repair": { "kind": "uniform", "min": 8, "max": 12 }
+      }
+    },
+    {
+      "id": "QC",
+      "input": "B1_CNC",
+      "output": "B3_DONE",
+      "servers": 1,
+      "process": { "kind": "fixed", "mean": 2 },
+      "inspection": {
+        "failRate": 0.25,
+        "maxRework": 2,
+        "reworkBuffer": "B2_REWORK",
+        "onExceed": "scrap"
+      }
+    },
+    {
+      "id": "REWORK",
+      "input": "B2_REWORK",
+      "output": "B1_CNC",
+      "servers": 1,
+      "process": { "kind": "uniform", "min": 3, "max": 5 }
+    }
+  ]
+}
